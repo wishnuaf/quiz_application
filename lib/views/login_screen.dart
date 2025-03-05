@@ -11,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _nameController = TextEditingController();
 
-  final _isActive = true;
+  bool _isActive = false;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -63,10 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder:
-                                      (context) => QuizScreen(
-                                        name: _nameController.text,
-                                      ),
+                                  builder: (context) => QuizScreen(),
                                 ),
                               );
                             }
@@ -106,20 +103,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget textFieldConst({
     String? hintText,
-    bool isPassword = false,
     required TextEditingController controller,
     String? Function(String?)? validator,
   }) => TextFormField(
     onChanged: (value) {
-      // if (controller.text.length > 5) {
-      //   setState(() {
-      //     _isActive = true;
-      //   });
-      // } else {
-      //   setState(() {
-      //     _isActive = false;
-      //   });
-      // }
+      if (controller.text.length > 5) {
+        setState(() {
+          _isActive = true;
+        });
+      } else {
+        setState(() {
+          _isActive = false;
+        });
+      }
     },
 
     controller: controller,
