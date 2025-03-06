@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_application/service/pref_handler.dart';
+import 'package:quiz_application/views/utils/constant/app_color.dart';
+import 'package:quiz_application/views/utils/constant/app_image.dart';
 import 'package:quiz_application/views/quiz_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, required this.name});
+  final String name;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -16,14 +20,30 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Image.asset(
-            "assets/images/bg_login_screen.png",
+            AppImage.bgLoginScreen,
             fit: BoxFit.cover,
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 173),
+                  Image.asset(
+                    AppImage.logo,
+                    fit: BoxFit.cover,
+                    width: 160,
+                    height: 160,
+                  ),
+                ],
+              ),
+            ),
           ),
           Form(
             key: _formKey,
@@ -44,8 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       textFieldConst(
                         hintText: "John Deh...",
                         controller: _nameController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
+                        validator: (hintText) {
+                          if (hintText == null || hintText.isEmpty) {
                             return "Nama Belum Di Isi";
                           }
                           return null;
@@ -59,11 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   InkWell(
                     onTap:
                         _isActive
-                            ? () {
+                            ? () async {
+                              PreferenceHandler.saveId(_nameController.text);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => QuizScreen(),
+                                  builder:
+                                      (context) => QuizScreen(
+                                        name: _nameController.text,
+                                      ),
                                 ),
                               );
                             }
@@ -72,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.all(16),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF8C660),
+                        color: AppColor.primaryColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       height: 59,

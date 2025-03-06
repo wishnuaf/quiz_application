@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:quiz_application/views/utils/constant/app_color.dart';
+import 'package:quiz_application/views/auth/login_screen.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  const QuizScreen({super.key, required this.name});
+  final String name;
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  final TextEditingController _nameController = TextEditingController();
   int _selectedOption = -1; // Jawaban yang dipilih
   int _timer = 30; // Timer awal
   late Timer _countdownTimer; // Timer countdown
@@ -54,18 +58,20 @@ class _QuizScreenState extends State<QuizScreen> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
-                      onPressed: () {}, // Fungsi untuk kembali
+                      onPressed: () {
+                        LoginScreen(name: _nameController.text);
+                      }, // Fungsi untuk kembali
                       child: Row(
                         children: [
                           Icon(
                             Icons.arrow_back_ios_new,
-                            color: Color(0xff004643),
+                            color: AppColor.secondColor,
                           ),
                           SizedBox(width: 5),
                           const Text(
                             "Previous",
                             style: TextStyle(
-                              color: Color(0xff004643),
+                              color: AppColor.secondColor,
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                             ),
@@ -108,7 +114,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withOpacity(0.1),
                         blurRadius: 20,
                         spreadRadius: -10,
                         offset: const Offset(0, 20),
